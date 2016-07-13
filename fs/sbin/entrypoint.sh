@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 set -eo pipefail
-source hdfs-lib.sh
+source /sbin/hdfs-lib.sh
 
 # No matter what, this runs
 if [[ ! -v ${HADOOP_MASTER_ADDRESS} ]]; then
