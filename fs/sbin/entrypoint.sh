@@ -24,7 +24,7 @@ else
 
     exec hdfs secondarynamenode
   elif [ $1 = "data" ]; then
-    wait_until_port_open ${HADOOP_MASTER_ADDRESS} 50070
+    wait_until_port_open ${HADOOP_MASTER_ADDRESS} 8020
     exec hdfs datanode
   else
     exec "$@"
