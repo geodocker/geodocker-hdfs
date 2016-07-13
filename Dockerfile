@@ -11,13 +11,13 @@ ENV PATH $PATH:$HADOOP_PREFIX/bin:$HADOOP_PREFIX/sbin
 # Install native libs for hadoop
 RUN yum install -y snappy snappy-devel lzo lzo-devel hadooplzo hadooplzo-native openssl-devel
 
-RUN set -x && \
-    mkdir -p $HADOOP_PREFIX && \
-    curl -# http://apache-mirror.rbc.ru/pub/apache/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz | tar -xz -C ${HADOOP_PREFIX} --strip-components=1
+RUN set -x \
+    && mkdir -p $HADOOP_PREFIX \
+    && curl -# http://apache.mirrors.pair.com/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
+    | tar -xz -C ${HADOOP_PREFIX} --strip-components=1
 
 COPY ./fs /
 
 VOLUME ["/data/hdfs"]
-EXPOSE 8020 50070 50470
 WORKDIR "${HADOOP_HOME}"
 ENTRYPOINT [ "/sbin/entrypoint.sh" ]
