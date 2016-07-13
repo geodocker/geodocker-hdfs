@@ -13,7 +13,7 @@ RUN yum install -y snappy snappy-devel lzo lzo-devel hadooplzo hadooplzo-native 
 
 RUN set -x \
     && mkdir -p $HADOOP_PREFIX \
-    && curl -# http://apache.mirrors.pair.com/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
+    && curl -sS -# http://apache.mirrors.pair.com/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
     | tar -xz -C ${HADOOP_PREFIX} --strip-components=1
 
 COPY ./fs /
