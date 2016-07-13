@@ -13,6 +13,9 @@ publish: build
 
 test: build
 	docker-compose up -d
-	docker-compose run --rm hdfs-name hdfs dfs -touchz /live-check
-	docker-compose run --rm hdfs-name hdfs dfs -ls /live-check
+	docker-compose run --rm hdfs-name bash -c "set -e \
+		&& source /sbin/hdfs-lib.sh \
+		&& wait_until_hdfs_is_available \
+		&& hdfs dfs -touchz /live-check \
+		&& hdfs dfs -ls /live-check"
 	docker-compose down
