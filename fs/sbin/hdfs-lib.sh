@@ -44,7 +44,7 @@ wait_until_port_open() {
 }
 
 hdfs_is_available() {
-	hdfs dfs -ls /
+	hdfs dfs -test -d /
 	return $?
 }
 
