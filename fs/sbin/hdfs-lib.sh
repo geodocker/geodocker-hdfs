@@ -34,13 +34,17 @@ with_backoff() {
   return $exitCode
 }
 
+is_port_open() {
+  if [[ $(nmap -sT $1 -p $2 --host-timeout 1m) == *"open"* ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 wait_until_port_open() {
-  echo -n "Waiting for TCP connection to $1:$2..."
-  while ! nc -w 1 $1 $2 2> /dev/null; do
-    echo -n .
-    sleep 1
-  done
-  echo "Ok."
+  echo "Checking for TCP connection to $1:$2..." 1>&2
+  with_backoff is_port_open $1 $2
 }
 
 hdfs_is_available() {
@@ -52,7 +56,7 @@ wait_until_hdfs_is_available() {
   hdfs dfsadmin -safemode wait
 	with_backoff hdfs_is_available
 	if [ $? != 0 ]; then
-		echo "HDFS not available before timeout. Exiting ..."
+		echo "HDFS not available before timeout. Exiting ..." 1>&2
 		exit 1
 	fi
 }
