@@ -48,12 +48,12 @@ wait_until_port_open() {
 }
 
 hdfs_is_available() {
-	hdfs dfs -test -d /
+	hdfs dfs -test -d / > /dev/null
 	return $?
 }
 
 wait_until_hdfs_is_available() {
-  hdfs dfsadmin -safemode wait
+  with_backoff hdfs dfsadmin -safemode wait
 	with_backoff hdfs_is_available
 	if [ $? != 0 ]; then
 		echo "HDFS not available before timeout. Exiting ..." 1>&2
