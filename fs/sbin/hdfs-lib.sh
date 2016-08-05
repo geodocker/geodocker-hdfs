@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
 
 # Avoid race conditions and actually poll for availability of component dependencies
 # Credit: http://stackoverflow.com/questions/8350942/how-to-re-run-the-curl-command-automatically-when-the-error-occurs/8351489#8351489
@@ -9,6 +11,7 @@ with_backoff() {
   local exitCode=0
 
   while (( $attempt < $max_attempts ))
+  echo "Attempt $attempt of $max_attempts: $@"
   do
     set +e
     "$@"
@@ -26,9 +29,10 @@ with_backoff() {
     timeout=$(( timeout * 2 ))
   done
 
-  if [[ $exitCode != 0 ]]
-  then
+  if [[ $exitCode != 0 ]]; then
     echo "Fail: $@ failed to complete after $max_attempts attempts" 1>&2
+  else
+    echo "Success: $@ completed after $attempt attempts" 1>&2
   fi
 
   return $exitCode
@@ -48,6 +52,7 @@ wait_until_port_open() {
 }
 
 hdfs_is_available() {
+  echo "Checking for HDFS availability"
 	hdfs dfs -test -d / > /dev/null
 	return $?
 }
@@ -55,8 +60,10 @@ hdfs_is_available() {
 wait_until_hdfs_is_available() {
   with_backoff hdfs dfsadmin -safemode wait
 	with_backoff hdfs_is_available
-	if [ $? != 0 ]; then
+	if [ hdfs_is_available == 0 ]; then
 		echo "HDFS not available before timeout. Exiting ..." 1>&2
 		exit 1
+  else
+    echo "HDFS is now available ..." 1>&2
 	fi
 }
