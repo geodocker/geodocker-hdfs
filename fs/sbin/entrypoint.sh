@@ -2,8 +2,8 @@
 set -eo pipefail
 source /sbin/hdfs-lib.sh
 
-configure_hadoop core-site
-configure_hadoop hdfs-site
+configure $HADOOP_CONF_DIR/core-site.xml
+configure $HADOOP_CONF_DIR/hdfs-site.xml
 
 # The first argument determines whether this container runs as data, namenode or secondary namenode
 if [ -z "$1" ]; then

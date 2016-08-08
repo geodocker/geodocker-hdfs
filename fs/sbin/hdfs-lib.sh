@@ -9,12 +9,12 @@ EOF
 "
 }
 
-function configure_hadoop() {
-  local FILE=$HADOOP_CONF_DIR/$1.xml
+function configure() {
+  local FILE=$1
   if [ -f $FILE ]; then
     echo "Found config: $FILE"
   else
-    local TEMPLATE=$HADOOP_CONF_DIR/$1.template.xml
+    local TEMPLATE=$FILE.template
     echo "Template config: $FILE from $TEMPLATE"
     render_template $TEMPLATE > $FILE
   fi
