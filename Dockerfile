@@ -4,6 +4,7 @@ MAINTAINER Pomadchin Grigory, daunnc@gmail.com
 
 ENV HADOOP_VERSION 2.7.1
 ENV HADOOP_HOME /usr/lib/hadoop
+ENV HADOOP_PREFIX /usr/lib/hadoop
 ENV HADOOP_CONF_DIR /etc/hadoop/conf
 
 RUN set -x \
