@@ -2,9 +2,29 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# Render a file as template, performing variable substetutions but leaving quotes unchanged
+# Credit: http://stackoverflow.com/questions/2914220/bash-templating-how-to-build-configuration-files-from-templates-with-bash
+function render_template() {
+eval "cat <<EOF
+$(<$1)
+EOF
+"
+}
+
+function template() {
+  local FILE=$1
+  if [ -f $FILE ]; then
+    echo "Found config: $FILE"
+  else
+    local TEMPLATE=${2:-$FILE.template}
+    echo "Template config: $FILE from $TEMPLATE"
+    render_template $TEMPLATE > $FILE
+  fi
+}
+
 # Avoid race conditions and actually poll for availability of component dependencies
 # Credit: http://stackoverflow.com/questions/8350942/how-to-re-run-the-curl-command-automatically-when-the-error-occurs/8351489#8351489
-with_backoff() {
+function with_backoff() {
   local max_attempts=${ATTEMPTS-5}
   local timeout=${INTIAL_POLLING_INTERVAL-1}
   local attempt=0
@@ -38,7 +58,7 @@ with_backoff() {
   return $exitCode
 }
 
-is_port_open() {
+function is_port_open() {
   if [[ $(nmap -sT $1 -p $2 --host-timeout 1m) == *"open"* ]]; then
     return 0
   else
@@ -46,7 +66,7 @@ is_port_open() {
   fi
 }
 
-wait_until_port_open() {
+function wait_until_port_open() {
   echo "Checking for TCP connection to $1:$2..." 1>&2
   with_backoff is_port_open $1 $2
 }
@@ -57,7 +77,7 @@ hdfs_is_available() {
 	return $?
 }
 
-wait_until_hdfs_is_available() {
+function wait_until_hdfs_is_available() {
   with_backoff hdfs dfsadmin -safemode wait
 	with_backoff hdfs_is_available
 	if [ hdfs_is_available == 0 ]; then
