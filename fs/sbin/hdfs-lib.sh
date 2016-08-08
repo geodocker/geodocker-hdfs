@@ -3,7 +3,10 @@ set -euo pipefail
 IFS=$'\n\t'
 
 function render_template() {
-  eval "echo \"$(cat $1)\""
+eval "cat <<EOF
+$(<$1)
+EOF
+"
 }
 
 function configure_hadoop() {
