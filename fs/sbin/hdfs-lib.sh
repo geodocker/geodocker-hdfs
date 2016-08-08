@@ -14,7 +14,7 @@ function configure() {
   if [ -f $FILE ]; then
     echo "Found config: $FILE"
   else
-    local TEMPLATE=$FILE.template
+    local TEMPLATE=${2:-$FILE.template}
     echo "Template config: $FILE from $TEMPLATE"
     render_template $TEMPLATE > $FILE
   fi
