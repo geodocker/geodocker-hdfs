@@ -2,10 +2,8 @@
 set -eo pipefail
 source /sbin/hdfs-lib.sh
 
-# No matter what, this runs
-if [[ ! -v ${HADOOP_MASTER_ADDRESS} ]]; then
-  sed -i.bak "s/{HADOOP_MASTER_ADDRESS}/${HADOOP_MASTER_ADDRESS}/g" ${HADOOP_CONF_DIR}/core-site.xml
-fi
+configure_hadoop core-site
+configure_hadoop hdfs-site
 
 # The first argument determines whether this container runs as data, namenode or secondary namenode
 if [ -z "$1" ]; then
@@ -16,7 +14,6 @@ else
     if  [[ ! -f /data/hdfs/name/current/VERSION ]]; then
       echo "Formatting namenode root fs in /data/hdfs/name..."
       hdfs namenode -format
-      echo
     fi
     exec hdfs namenode
   elif [ $1 = "sname" ]; then

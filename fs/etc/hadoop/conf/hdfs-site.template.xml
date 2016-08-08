@@ -37,8 +37,4 @@
        <name>dfs.datanode.use.datanode.hostname</name>
        <value>true</value>
     </property>
-    <!-- <property>
-        <name>dfs.datanode.du.reserved</name>
-        <value>3298534883328</value>
-    </property> -->
 </configuration>
