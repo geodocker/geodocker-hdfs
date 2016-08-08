@@ -2,6 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# Render a file as template, performing variable substetutions but leaving quotes unchanged
+# Credit: http://stackoverflow.com/questions/2914220/bash-templating-how-to-build-configuration-files-from-templates-with-bash
 function render_template() {
 eval "cat <<EOF
 $(<$1)
