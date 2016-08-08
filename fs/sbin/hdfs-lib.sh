@@ -2,6 +2,10 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+function render_template() {
+  eval "echo \"$(cat $1)\""
+}
+
 function configure_hadoop() {
   local FILE=$HADOOP_CONF_DIR/$1.xml
   if [ -f $FILE ]; then
@@ -9,7 +13,7 @@ function configure_hadoop() {
   else
     local TEMPLATE=$HADOOP_CONF_DIR/$1.template.xml
     echo "Template config: $FILE from $TEMPLATE"
-    envsubst < $TEMPLATE > $FILE
+    render_template $TEMPLATE > $FILE
   fi
 }
 
