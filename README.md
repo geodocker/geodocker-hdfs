@@ -12,8 +12,13 @@ This container has three roles that can be supplied as `CMD`:
   - `sname` - HDFS secondary namenode
   - `data` - HDFS data node
 
-# Environment
+# Configuration
+
+Configuration can be done by either providing the required environment variables such that a minimal configuration can be templated or by volume mounting hadoop configuration directory to `/etc/hadoop/conf`
+
+# Environmen
   - `HADOOP_MASTER_ADDRESS` - hostname for HDFS root, required for all roles
+
 
 # Testing
 This container should be tested with `docker-compose` and through `make test`
