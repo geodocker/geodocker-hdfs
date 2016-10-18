@@ -51,6 +51,8 @@ function with_backoff() {
 
   if [[ $exitCode != 0 ]]; then
     echo "Fail: $@ failed to complete after $max_attempts attempts" 1>&2
+  elif [[ $exitCode -gt 128 ]]; then
+    echo "Fail: $@ aborted by user" 1>&2
   else
     echo "Success: $@ completed after $attempt attempts" 1>&2
   fi
