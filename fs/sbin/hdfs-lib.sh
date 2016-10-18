@@ -30,9 +30,8 @@ function with_backoff() {
   local attempt=0
   local exitCode=0
 
-  while (( $attempt < $max_attempts ))
-  echo "Attempt $attempt of $max_attempts: $@"
-  do
+  while [ $attempt -le $max_attempts ]; do
+    echo "Attempt $attempt of $max_attempts: $@"
     set +e
     "$@"
     exitCode=$?
