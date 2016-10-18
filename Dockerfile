@@ -1,4 +1,4 @@
-FROM quay.io/geodocker/base:latest
+FROM quay.io/geodocker/base:0.1
 
 MAINTAINER Pomadchin Grigory, daunnc@gmail.com
 
