@@ -16,7 +16,7 @@ This container has three roles that can be supplied as `CMD`:
 
 Configuration can be done by either providing the required environment variables such that a minimal configuration can be templated or by volume mounting hadoop configuration directory to `/etc/hadoop/conf`
 
-# Environmen
+# Environment
   - `HADOOP_MASTER_ADDRESS` - hostname for HDFS root, required for all roles
 
 
